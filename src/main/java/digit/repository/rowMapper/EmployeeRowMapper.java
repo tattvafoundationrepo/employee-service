@@ -7,16 +7,15 @@ import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
-public class EmployeeRowMapper implements ResultSetExtractor<List<EmployeeData>> {
+public class EmployeeRowMapper implements ResultSetExtractor<EmployeeData> {
+
     @Override
-    public List<EmployeeData> extractData(ResultSet rs) throws SQLException, DataAccessException {
-        List<EmployeeData> employeeDataList = new ArrayList<>();
+    public EmployeeData extractData(ResultSet rs) throws SQLException, DataAccessException {
+        EmployeeData employeeData = new EmployeeData();
         while (rs.next()) {
-            EmployeeData employeeData = EmployeeData.builder().
+            employeeData = EmployeeData.builder().
                     empCode(rs.getString("empCode")).
                     empCity(rs.getString("empCity"))
                     .empDepartment(rs.getString("empDepartment"))
@@ -41,10 +40,9 @@ public class EmployeeRowMapper implements ResultSetExtractor<List<EmployeeData>>
                     .createdBy(rs.getString("createdBy"))
                     .updatedBy(rs.getString("updatedBy"))
                     .build();
-            employeeDataList.add(employeeData);
 
         }
 
-        return employeeDataList;
+        return employeeData;
     }
 }

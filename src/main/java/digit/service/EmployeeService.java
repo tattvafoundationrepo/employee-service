@@ -55,8 +55,8 @@ public class EmployeeService {
             employeeCriteriaRequest.setCreatedAt(request.getCreatedAt());
             employeeCriteriaRequest.setUpdatedBy(request.getUpdatedBy());
             employeeCriteriaRequest.setUpdatedAt(request.getUpdatedAt());
-            upsertEmployeeData(empData, employeeCriteriaRequest, empCode);
-
+            upsertEmployeeData(empData, employeeCriteriaRequest, empCode);//db save
+   //HRMS
             EmployeeSearchCriteria searchCriteria=new EmployeeSearchCriteria();
             searchCriteria.setEmpCode(empId);
 
@@ -148,14 +148,22 @@ public class EmployeeService {
 
 
             String URL = getEmployeeSaveUrl() + "?tenantId=" + request.getTenantId();
-            restTemplate.postForObject(URL.toString(), employeeRequest1, Map.class);
+            EmployeeData employeeData = repository.getEmployeeData(searchCriteria);
+            if (employeeData.getEmpCode() != null &&( employeeData.getStatus().equalsIgnoreCase("New Record")|employeeData.getStatus().equalsIgnoreCase("Update"))) {
+                restTemplate.postForObject(URL.toString(), employeeRequest1, Map.class);
 
-            // List<EmployeeData> employeeData = repository.getEmployeeData(searchCriteria);
-//            if (!ObjectUtils.isEmpty(employeeData)) {
-//                EmployeeData data = mapData(empData);
-//                data.setStatus("Process");
-//                producer.push("save-employee-data", data);
+                employeeData.setStatus("PROCESSED");
+                producer.push("save-employee-data", employeeData);
+            }
+            // for this block we need to put URL
+//            else if (employeeData.getEmpCode() != null && employeeData.getStatus().equalsIgnoreCase("Update")) {
+//
+//                restTemplate.put(URL.toString(), employeeRequest1, Map.class);
+//                employeeData.setStatus("PROCESSED");
+//                producer.push("save-employee-data", employeeData);
+//
 //            }
+
         }
 
     }
