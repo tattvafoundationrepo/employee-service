@@ -1,0 +1,63 @@
+serviceMaps:
+  serviceName: employee-service-services
+  mappings:
+    - version: 1.0
+      description: Persists or updates employee data
+      fromTopic: save-employee-data
+      isTransaction: true
+      queryMaps:
+        - query: |
+            INSERT INTO eg_employee_data 
+            (empCode, empCity, empDepartment, empDesignation, empDistrict, empDob, empEmail, empEmptype, empFname, empGender, empJoining, empLname, empMname, empMob, empPlaceofpost, empPostal, empRetirement, empStreet1, empStreet2, status, createdAt, updatedAt, CreatedBy, updatedBy) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)
+            ON CONFLICT (empCode) 
+            DO UPDATE SET
+              empCity = EXCLUDED.empCity,
+              empDepartment = EXCLUDED.empDepartment,
+              empDesignation = EXCLUDED.empDesignation,
+              empDistrict = EXCLUDED.empDistrict,
+              empDob = EXCLUDED.empDob,
+              empEmail = EXCLUDED.empEmail,
+              empEmptype = EXCLUDED.empEmptype,
+              empFname = EXCLUDED.empFname,
+              empGender = EXCLUDED.empGender,
+              empJoining = EXCLUDED.empJoining,
+              empLname = EXCLUDED.empLname,
+              empMname = EXCLUDED.empMname,
+              empMob = EXCLUDED.empMob,
+              empPlaceofpost = EXCLUDED.empPlaceofpost,
+              empPostal = EXCLUDED.empPostal,
+              empRetirement = EXCLUDED.empRetirement,
+              empStreet1 = EXCLUDED.empStreet1,
+              empStreet2 = EXCLUDED.empStreet2,
+              status = EXCLUDED.status,
+              createdAt = EXCLUDED.createdAt,
+              updatedAt = EXCLUDED.updatedAt,
+              CreatedBy = EXCLUDED.CreatedBy,
+              updatedBy = EXCLUDED.updatedBy;
+          basePath: $.EmployeeData
+          jsonMaps:
+            - jsonPath: $.EmployeeData.empCode
+            - jsonPath: $.EmployeeData.empCity
+            - jsonPath: $.EmployeeData.empDepartment
+            - jsonPath: $.EmployeeData.empDesignation
+            - jsonPath: $.EmployeeData.empDistrict
+            - jsonPath: $.EmployeeData.empDob
+            - jsonPath: $.EmployeeData.empEmail
+            - jsonPath: $.EmployeeData.empEmptype
+            - jsonPath: $.EmployeeData.empFname
+            - jsonPath: $.EmployeeData.empGender
+            - jsonPath: $.EmployeeData.empJoining
+            - jsonPath: $.EmployeeData.empLname
+            - jsonPath: $.EmployeeData.empMname
+            - jsonPath: $.EmployeeData.empMob
+            - jsonPath: $.EmployeeData.empPlaceofpost
+            - jsonPath: $.EmployeeData.empPostal
+            - jsonPath: $.EmployeeData.empRetirement
+            - jsonPath: $.EmployeeData.empStreet1
+            - jsonPath: $.EmployeeData.empStreet2
+            - jsonPath: $.EmployeeData.status
+            - jsonPath: $.EmployeeData.createdAt
+            - jsonPath: $.EmployeeData.updatedAt
+            - jsonPath: $.EmployeeData.createdBy
+            - jsonPath: $.EmployeeData.updatedBy
