@@ -10,7 +10,9 @@ import digit.web.models.request.EmployeeRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.text.ParseException;
@@ -149,11 +151,24 @@ public class EmployeeService {
 
             String URL = getEmployeeSaveUrl() + "?tenantId=" + request.getTenantId();
             EmployeeData employeeData = repository.getEmployeeData(searchCriteria);
-            if (employeeData.getEmpCode() != null &&( employeeData.getStatus().equalsIgnoreCase("New Record")|employeeData.getStatus().equalsIgnoreCase("Update"))) {
-                restTemplate.postForObject(URL.toString(), employeeRequest1, Map.class);
+            if (employeeData.getEmpCode() != null && ("New Record".equalsIgnoreCase(employeeData.getStatus()) || "Update".equalsIgnoreCase(employeeData.getStatus()))) {
+                try {
+                    restTemplate.postForObject(URL.toString(), employeeRequest1, Map.class);
 
-                employeeData.setStatus("PROCESSED");
-                producer.push("save-employee-data", employeeData);
+                    employeeData.setStatus("PROCESSED");
+
+                } catch (HttpClientErrorException e) {
+                    String response = e.getResponseBodyAsString();
+                    if (e.getStatusCode() == HttpStatus.BAD_REQUEST) {
+                        if (response.contains("ERR_HRMS_USER_EXIST_USERNAME")) {
+                            employeeData.setStatus("PROCESSED");
+                            e.printStackTrace();
+                        }
+                    }
+
+                }
+                employeeCriteriaRequest.setEmployeeData(employeeData);
+                producer.push("save-employee-data", employeeCriteriaRequest);
             }
             // for this block we need to put URL
 //            else if (employeeData.getEmpCode() != null && employeeData.getStatus().equalsIgnoreCase("Update")) {
