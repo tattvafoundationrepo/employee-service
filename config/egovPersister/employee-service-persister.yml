@@ -31,9 +31,7 @@ serviceMaps:
               empStreet1 = EXCLUDED.empStreet1,
               empStreet2 = EXCLUDED.empStreet2,
               status = EXCLUDED.status,
-              createdAt = EXCLUDED.createdAt,
               updatedAt = EXCLUDED.updatedAt,
-              CreatedBy = EXCLUDED.CreatedBy,
               updatedBy = EXCLUDED.updatedBy;
           basePath: $.EmployeeData
           jsonMaps:
