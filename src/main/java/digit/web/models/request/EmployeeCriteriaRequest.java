@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.egov.common.contract.request.RequestInfo;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,6 +23,8 @@ public class EmployeeCriteriaRequest {
 
     @JsonProperty("EMP_ID")
     private String empId;
+    @JsonProperty("empCode")
+    private List<String> empCode;
 
     private Long createdAt;
     private Long updatedAt;

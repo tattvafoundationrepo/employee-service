@@ -1,6 +1,7 @@
 package digit.repository.queryBuilder;
 
-import digit.web.models.EmployeeSearchCriteria;
+
+import digit.web.models.request.EmployeeCriteriaRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
@@ -15,14 +16,14 @@ public class EmployeeQueryBuilder {
      """;
 
 
-    public String getEmployeeDetails(EmployeeSearchCriteria searchCriteria, List<Object> preparedStmtList){
+    public String getEmployeeDetails(EmployeeCriteriaRequest searchCriteria, List<Object> preparedStmtList){
 
         StringBuilder query = new StringBuilder(BASE_QUERY);
 
-            if (!ObjectUtils.isEmpty(searchCriteria.getEmpCode())) {
+            if (!ObjectUtils.isEmpty(searchCriteria.getEmpId())) {
                 addClauseIfRequired(query, preparedStmtList);
                 query.append("empCode = ? ");
-                preparedStmtList.add(searchCriteria.getEmpCode());
+                preparedStmtList.add(searchCriteria.getEmpId());
             }
 
         return query.toString();

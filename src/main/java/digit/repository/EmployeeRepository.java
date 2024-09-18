@@ -4,6 +4,7 @@ import digit.repository.queryBuilder.EmployeeQueryBuilder;
 import digit.repository.rowMapper.EmployeeRowMapper;
 import digit.web.models.EmployeeData;
 import digit.web.models.EmployeeSearchCriteria;
+import digit.web.models.request.EmployeeCriteriaRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -23,7 +24,14 @@ public class EmployeeRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public EmployeeData getEmployeeData(EmployeeSearchCriteria searchCriteria) {
+//    public EmployeeData getEmployeeData(EmployeeSearchCriteria searchCriteria) {
+//        List<Object> preparedStmtList = new ArrayList<>();
+//        String query = queryBuilder.getEmployeeDetails(searchCriteria, preparedStmtList);
+//        log.info(" query: " + query);
+//        return jdbcTemplate.query(query, rowMapper, preparedStmtList.toArray());
+//
+//    }
+    public List<EmployeeData> getEmployeeData(EmployeeCriteriaRequest searchCriteria) {
         List<Object> preparedStmtList = new ArrayList<>();
         String query = queryBuilder.getEmployeeDetails(searchCriteria, preparedStmtList);
         log.info(" query: " + query);

@@ -7,31 +7,33 @@ import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
-public class EmployeeRowMapper implements ResultSetExtractor<EmployeeData> {
+public class EmployeeRowMapper implements ResultSetExtractor<List<EmployeeData>> {
 
     @Override
-    public EmployeeData extractData(ResultSet rs) throws SQLException, DataAccessException {
-        EmployeeData employeeData = new EmployeeData();
+    public List<EmployeeData> extractData(ResultSet rs) throws SQLException, DataAccessException {
+        List<EmployeeData> employeeDataList = new ArrayList<>();
         while (rs.next()) {
-            employeeData = EmployeeData.builder().
+            EmployeeData   employeeData = EmployeeData.builder().
                     empCode(rs.getString("empCode")).
                     empCity(rs.getString("empCity"))
                     .empDepartment(rs.getString("empDepartment"))
                     .empDesignation(rs.getString("empDesignation"))
                     .empDistrict(rs.getString("empDistrict"))
-                    .empDob(rs.getLong("empDob"))
+                    .empDob(rs.getString("empDob"))
                     .empEmail(rs.getString("empEmail")).
                     empEmptype(rs.getString("empEmptype")).
                     empFname(rs.getString("empFname")).
                     empGender(rs.getString("empGender"))
-                    .empJoining(rs.getLong("empJoining")).
+                    .empJoining(rs.getString("empJoining")).
                     empLname(rs.getString("empLname")).
                     empMname(rs.getString("empMname")).
                     empMob(rs.getString("empMob")).
                     empPlaceofpost(rs.getString("empPlaceofpost")).empPostal(rs.getLong("empPostal"))
-                    .empRetirement(rs.getLong("empRetirement")).
+                    .empRetirement(rs.getString("empRetirement")).
                     empStreet1(rs.getString("empStreet1"))
                     .empStreet2(rs.getString("empStreet2")).
                     status(rs.getString("status")).
@@ -40,9 +42,10 @@ public class EmployeeRowMapper implements ResultSetExtractor<EmployeeData> {
                     .createdBy(rs.getString("createdBy"))
                     .updatedBy(rs.getString("updatedBy"))
                     .build();
+            employeeDataList.add(employeeData);
 
         }
 
-        return employeeData;
+        return employeeDataList;
     }
 }
