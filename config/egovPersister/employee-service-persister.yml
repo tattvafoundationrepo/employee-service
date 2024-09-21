@@ -8,8 +8,8 @@ serviceMaps:
       queryMaps:
         - query: |
             INSERT INTO eg_employee_data 
-            (empCode, empCity, empDepartment, empDesignation, empDistrict, empDob, empEmail, empEmptype, empFname, empGender, empJoining, empLname, empMname, empMob, empPlaceofpost, empPostal, empRetirement, empStreet1, empStreet2, status, createdAt, updatedAt, CreatedBy, updatedBy) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)
+            (empCode, empCity, empDepartment, empDesignation, empDistrict, empDob, empEmail, empEmptype, empFname, empGender, empJoining, empLname, empMname, empMob, empPlaceofpost, empPostal, empRetirement, empStreet1, empStreet2, status, createdAt, updatedAt, CreatedBy, updatedBy,remark) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)
             ON CONFLICT (empCode) 
             DO UPDATE SET
               empCity = EXCLUDED.empCity,
@@ -32,7 +32,8 @@ serviceMaps:
               empStreet2 = EXCLUDED.empStreet2,
               status = EXCLUDED.status,
               updatedAt = EXCLUDED.updatedAt,
-              updatedBy = EXCLUDED.updatedBy;
+              updatedBy = EXCLUDED.updatedBy,
+              remark = EXCLUDED.remark;
           basePath: $.EmployeeData
           jsonMaps:
             - jsonPath: $.EmployeeData.empCode
@@ -59,3 +60,4 @@ serviceMaps:
             - jsonPath: $.EmployeeData.updatedAt
             - jsonPath: $.EmployeeData.createdBy
             - jsonPath: $.EmployeeData.updatedBy
+            - jsonPath: $.EmployeeData.remark
